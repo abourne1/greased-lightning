@@ -40,7 +40,7 @@ def get_event(q, deadzone=4000, scale=30000):
                     data[key] = apply_deadzone(data[key],deadzone,scale)
                 if data[key]==_data[key]: continue
                 event = Event(key,data[key],_data[key])
-                q.insert(event)
+                q.update(event)
             _data = data
 
 

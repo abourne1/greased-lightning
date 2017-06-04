@@ -3,7 +3,9 @@ import math
 import time
 import xbox_read
 import threading 
-
+import picamera
+import requests
+import json
 """
 Sxxx: speed command
 Dxxx: degree command
@@ -17,6 +19,7 @@ ser = serial.Serial('/dev/ttyACM5', BAUD)
 x = 0
 y = 0
 theta = 90
+url = 'https://vrushanks_url.com'
 
 def sgn(x):
     if x >= 0:
@@ -59,6 +62,7 @@ class SerialCommmand(object):
 if __name__ == '__main__':
 	setUp()
 	
+	camera = picamera.PiCamera()
 	kc = KeyCollection()
 	t = threading.Thread(target=xbox_read.get_event, args=(kc,))
 	t.start()
@@ -78,6 +82,16 @@ if __name__ == '__main__':
 			print sc
 			ser.write(sc.toString())
 			print "written"
+			camera.capture('now.jpg')
+			payload = {
+				'angle': angle,
+				'speed': speed,
+				'photo': open(now.jpg)
+			}
+			# Requests should be fired off in a separate process
+			# for the sake of efficiency
+			r = requests.post(url=url, data=json.dumps(payload))
+			print "status: " + r.staus_code	
 		time.sleep(1.25)
 		
 	destroy()
