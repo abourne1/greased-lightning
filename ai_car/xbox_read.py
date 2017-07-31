@@ -3,8 +3,6 @@ from sys import stdin
 import re
 import time
 
-# Andrew Bourne test test test
-
 s = re.compile('[ :]')
 
 class Event:
